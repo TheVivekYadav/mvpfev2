@@ -2,6 +2,7 @@ import {create} from 'zustand';
 import type {User} from '../types';
 import authService from "../api/authService.ts";
 import friendService from "../api/friendService.ts";
+import groupService from "../api/groupService.ts";
 
 interface AppState {
     user: User | null;
@@ -34,14 +35,25 @@ export const useAppStore = create<AppState>((set) => ({
     friendRequests: [],
     fetchFriendRequests: async () => {
         try {
-            const res = await friendService.getFriendRequests().then((response => {
-                console.log(response.data.request);
+            await friendService.getFriendRequests().then((response => {
+                console.log(response.data.requests);
+                set({friendRequests: response.data.requests});
+                console.log("Friend requests fetched successfully", useAppStore.getState().friendRequests);
             }));
-            set({friendRequests: res.data.request}); // Store in state
-            console.log("Friend requests fetched successfully", useAppStore.getState().friendRequests);
+
         } catch (error) {
             console.error("Error fetching friend requests:", error);
             set({friendRequests: []});
         }
-    }
+    },
+    getFriendRequests: () => useAppStore.getState().friendRequest,
+    groups: [],
+    fetchGroups: async () => {
+        await groupService.getGroups().then((res) => {
+            console.log("Groups fetched successfully", res.data);
+            set({groups: res.data});
+            console.log("Groups in store:", useAppStore.getState().groups);
+        })
+    },
+    getGroups: () => useAppStore.getState().groups,
 }));

@@ -20,3 +20,20 @@ export interface ResetPasswordPayload {
     newPassword?: string;
 }
 
+export interface Group {
+    _id: string;
+    name: string;
+    members: string[];
+    // ...other group fields...
+}
+
+export interface GroupData {
+    name: string;
+    members?: string[];
+    // ...other fields for group creation...
+}
+
+export interface UserIdPayload {
+    groupId: string;
+    userId: string;
+}
