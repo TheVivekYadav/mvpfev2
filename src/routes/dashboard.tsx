@@ -39,12 +39,12 @@ export const Route = createFileRoute('/dashboard')({
 // The Component Itself
 function DashboardComponent() {
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [groups, setGroups] = useState({});
 
     useEffect(() => {
         setGroups(groupService.getAllGroups().then((res) => {
             console.log(res.data.groups)
+            console.log(groups)
         }))
     }, []);
 
