@@ -1,9 +1,8 @@
 import axiosInstance from "./axios.ts";
 
-const groupService = {
+export const groupService = {
     getAllGroups: async () => {
-        return await axiosInstance.get("/groups/get-all-groups");
+        return await axiosInstance.get("/groups/");
     }
 }
 
-export default groupService;

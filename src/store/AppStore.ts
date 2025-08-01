@@ -1,17 +1,21 @@
 import {create} from 'zustand';
 import type {User} from '../types';
 import authService from '../api/authService';
+import {groupService} from '../api/groupService';
 
 interface AppState {
     user: User | null;
-    isLoading: boolean; // Add isLoading to track auth status
+    isLoading: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     verifyAuth: () => Promise<void>;
+    groups: string[];
+    getAllGroups: () => Promise<void>;
 }
 
 export const useAppStore = create<AppState>((set) => ({
     user: null,
-    isLoading: true, // Start as true to handle the initial auth check
+    isLoading: true,
+    groups: [],
 
     login: async (email, password) => {
         try {
@@ -20,11 +24,9 @@ export const useAppStore = create<AppState>((set) => ({
                 set({user: res.data.user});
                 return true;
             }
-            // If login fails on the server side
             set({user: null});
             return false;
         } catch (error) {
-            // If the request itself fails
             console.error("Login failed:", error);
             set({user: null});
             return false;
@@ -32,7 +34,6 @@ export const useAppStore = create<AppState>((set) => ({
     },
 
     verifyAuth: async () => {
-        // No need to set isLoading here if it's already true on init
         try {
             const res = await authService.verifyToken();
             if (res.data?.user) {
@@ -41,11 +42,20 @@ export const useAppStore = create<AppState>((set) => ({
                 set({user: null});
             }
         } catch (error) {
-            // This is expected if the user has no valid token
+            console.error("Token verification failed:", error);
             set({user: null});
         } finally {
-            // This runs after the try/catch block finishes
             set({isLoading: false});
+        }
+    },
+
+    getAllGroups: async () => {
+        try {
+            const res = await groupService.getAllGroups();
+            set({groups: res.data?.groups || []});
+        } catch (error) {
+            console.error("Failed to get groups:", error);
+            set({groups: []});
         }
     },
 }));

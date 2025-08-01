@@ -44,43 +44,38 @@ export function Login() {
     }
 
     return (
-        // 5. Use a responsive max-width instead of a fixed width
-        <div className="bg-amber-800 w-full max-w-lg mx-auto rounded-lg shadow-md">
-            <h1 className="text-white p-4 text-center text-2xl font-bold">Login to continue...</h1>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-100">
+            <div className="w-full max-w-lg mx-auto rounded-xl shadow-lg bg-white">
+                <h1 className="text-blue-700 p-6 text-center text-2xl font-bold">Login to continue...</h1>
+                <form onSubmit={handleOnSubmit} className="flex flex-col items-center justify-center p-6 gap-4">
+                    <label htmlFor="email" className="sr-only">Email</label>
+                    <Input
+                        id="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className="block"
+                        placeholder="contact@thevivekyadav.me"
+                        disabled={isLoading}
+                    />
 
-            {/* Use a <form> element for better semantics and accessibility */}
-            <form onSubmit={handleOnSubmit} className="flex flex-col items-center justify-center p-4 gap-4">
+                    <label htmlFor="password" className="sr-only">Password</label>
+                    <Input
+                        id="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="block"
+                        type="password"
+                        placeholder="••••••••••"
+                        disabled={isLoading}
+                    />
 
-                {/* 6. Add labels for accessibility (sr-only hides them visually) */}
-                <label htmlFor="email" className="sr-only">Email</label>
-                <Input
-                    id="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="block"
-                    placeholder="contact@thevivekyadav.me"
-                    disabled={isLoading}
-                />
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
 
-                <label htmlFor="password" className="sr-only">Password</label>
-                <Input
-                    id="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    className="block"
-                    type="password"
-                    placeholder="••••••••••"
-                    disabled={isLoading}
-                />
-
-                {/* 7. Conditionally render the error message */}
-                {error && <p className="text-red-300 text-sm">{error}</p>}
-
-                <Button type="submit" disabled={isLoading}>
-                    {/* Show different text based on loading state */}
-                    {isLoading ? "Logging in..." : "Login"}
-                </Button>
-            </form>
+                    <Button type="submit" disabled={isLoading} className="w-full">
+                        {isLoading ? "Logging in..." : "Login"}
+                    </Button>
+                </form>
+            </div>
         </div>
     );
 }

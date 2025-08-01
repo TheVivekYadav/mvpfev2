@@ -6,7 +6,9 @@ export function Navbar() {
             <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">Home</Link>
             <Link to="/about" className="text-gray-700 hover:text-blue-600 font-medium">About</Link>
             <Link to="/login" className="text-gray-700 hover:text-blue-600 font-medium">Login</Link>
+            <Link to="/register" className="text-gray-700 hover:text-blue-600 font-medium">Register</Link>
             <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium">Dashboard</Link>
+            <Link to="/logout" className="text-gray-700 hover:text-blue-600 font-medium">Log Out</Link>
         </nav>
     );
 }
