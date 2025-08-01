@@ -1,31 +1,27 @@
 import Button from "./ui/Button.tsx";
 import Input from "./ui/Input.tsx";
 import {useState} from "react";
-import authService from "../api/authService.ts";
 import {useNavigate} from "@tanstack/react-router";
-
+import {useAppStore} from "../store/AppStore"; // import app store
 
 export function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const login = useAppStore(state => state.login); // get login from app store
 
-    function handleOnSubmit() {
+    async function handleOnSubmit() {
         if (!email || !password) {
             alert("Please fill in all fields");
             return;
         }
-        authService.login({email, password}).then(
-            res => {
-                console.log("Logging in with response:", res);
-                navigate({to: "/dashboard"});
-            }
-        ).catch(error => {
-            console.error("Login failed:", error);
+        const success = await login(email, password);
+        if (success) {
+            navigate({to: "/dashboard"});
+        } else {
             alert("Login failed. Please check your credentials and try again.");
-        })
-        // Reset fields after submission
+        }
         setEmail("");
         setPassword("");
     }
