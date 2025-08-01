@@ -8,7 +8,6 @@ export const Route = createFileRoute('/dashboard')({
 
 function RouteComponent() {
     const user = useAppStore(state => state.user);
-
     useEffect(() => {
         useAppStore.getState().verifyAuth();
     }, []);
@@ -17,7 +16,7 @@ function RouteComponent() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-100 p-4">
             <h1 className="font-bold text-2xl mb-1 text-gray-800">Dashboard - {user?.name}</h1>
-            <p className="text-gray-600 mb-6">User Id: <span className="font-mono">{user?._id}</span></p>
+            <p className="text-gray-600 mb-6">User Id: <span className="font-mono">{user?.id}</span></p>
             <div className="flex flex-col md:flex-row gap-6 w-full max-w-6xl mx-auto">
                 {/* Friend Request Section */}
                 <div className="flex-1 bg-white rounded-xl shadow-lg p-6 min-w-[220px] border border-gray-100">
@@ -29,7 +28,9 @@ function RouteComponent() {
                         </svg>
                         Friend Requests
                     </h2>
-
+                    <ul className="space-y-2">
+                        <li className="text-gray-400 italic">No friend requests</li>
+                    </ul>
                 </div>
 
                 {/* Groups & Expenses Section */}
@@ -45,19 +46,13 @@ function RouteComponent() {
                     <div className="mb-4 text-gray-700">
                         Total Groups:{" "}
                         <span className="font-bold text-green-600">
-                            "Loading..."
+                            0
                         </span>
                     </div>
                     <div>
                         <h3 className="font-medium text-gray-700 mb-2">Recent Expenses</h3>
                         <ul className="space-y-1">
-
-                            <li className="text-gray-400 italic">Loading...</li>
                             <li className="text-gray-400 italic">No groups found</li>
-                            <li className="bg-green-50 rounded px-2 py-1">
-                                - <span className="font-semibold text-green-700">
-                                    </span>
-                            </li>
                         </ul>
                     </div>
                 </div>
