@@ -1,5 +1,7 @@
 import {createFileRoute, redirect} from '@tanstack/react-router';
 import {useAppStore} from '../store/AppStore.ts';
+import {useEffect, useState} from "react";
+import groupService from "../api/groupService.ts";
 
 // Route Definition with Authentication Guard
 export const Route = createFileRoute('/dashboard')({
@@ -36,6 +38,16 @@ export const Route = createFileRoute('/dashboard')({
 
 // The Component Itself
 function DashboardComponent() {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [groups, setGroups] = useState({});
+
+    useEffect(() => {
+        setGroups(groupService.getAllGroups().then((res) => {
+            console.log(res.data.groups)
+        }))
+    }, []);
+
     // Because of `beforeLoad`, we are now guaranteed that `user` is not null when this renders.
     const user = useAppStore((state) => state.user)!; // The '!' asserts user is non-null.
 

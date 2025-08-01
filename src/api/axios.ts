@@ -1,5 +1,3 @@
-// src/api/axiosInstance.ts
-
 import axios, {AxiosError} from 'axios';
 
 
@@ -8,7 +6,9 @@ interface ErrorResponse {
     error: string;
 }
 
-const API_URL: string = "https://lit-taiga-14830-0bf1567c8578.herokuapp.com/api/";
+// const API_URL: string = "https://lit-taiga-14830-0bf1567c8578.herokuapp.com/api/";
+// const API_URL: string = "https://backend.thevivekyadav.me/api";
+const API_URL: string = "http://localhost:8080/api";
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
