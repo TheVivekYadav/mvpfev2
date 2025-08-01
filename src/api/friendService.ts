@@ -11,6 +11,6 @@ export const friendService = {
         return axiosInstance.post("contacts/accept-requests", {fromUserId: userId})
     },
     getFriends: async () => {
-        return axiosInstance.get("contacts/friends");
+        return axiosInstance.get("contacts/");
     }
 }
