@@ -8,6 +8,9 @@ export const friendService = {
         return axiosInstance.get("contacts/friend-requests");
     },
     acceptFriendRequest: async (userId) => {
-        return axiosInstance.post("contacts/add", {userId})
+        return axiosInstance.post("contacts/accept-requests", {fromUserId: userId})
+    },
+    getFriends: async () => {
+        return axiosInstance.get("contacts/friends");
     }
 }

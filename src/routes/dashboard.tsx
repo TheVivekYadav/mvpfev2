@@ -4,7 +4,6 @@ import {groupService} from '../api/groupService.ts';
 import {useState} from "react";
 import {friendService} from "../api/friendService.ts";
 
-// Route Definition with Authentication Guard and Data Loader
 export const Route = createFileRoute('/dashboard')({
     beforeLoad: async () => {
         const {verifyAuth, user} = useAppStore.getState();
@@ -22,7 +21,12 @@ export const Route = createFileRoute('/dashboard')({
         try {
             const response = await groupService.getAllGroups();
             const friendRequests = await friendService.getAllFriendRequests();
-            return {groups: response.data.groups, friendRequest: friendRequests.data.requests};
+            const friends = await friendService.getFriends();
+            return {
+                groups: response.data.groups,
+                friendRequest: friendRequests.data.requests,
+                friends: friends.data.contacts
+            };
         } catch (error) {
             console.error("Failed to load groups:", error);
             return {};
@@ -38,6 +42,7 @@ function DashboardComponent() {
 
     const {groups} = Route.useLoaderData();
     const {friendRequest} = Route.useLoaderData();
+    const {friends} = Route.useLoaderData();
 
     const handleSendFriendRequest = async () => {
         if (!friendID) {
@@ -137,6 +142,27 @@ function DashboardComponent() {
                             </li>
                         )}
                     </ul>
+                    <ul className="space-y-2 mt-4">
+
+                        {(friends?.length ?? 0) > 0 ? (
+                            friends!.map((friend) => (
+                                <li
+                                    key={friend._id}
+                                    className="bg-green-50 text-green-700 px-4 py-2 rounded-md flex items-center gap-2 shadow-sm hover:bg-green-100 transition"
+                                >
+                                    <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2-7 4v1a1 1 0 001 1h12a1 1 0 001-1v-1c0-2-3-4-7-4z"/>
+                                    </svg>
+                                    <span className="font-medium">{friend.name}</span>
+                                </li>
+                            ))
+                        ) : (
+                            <li className="text-gray-400 italic text-center py-2 bg-gray-50 rounded-md">
+                                No Friends
+                            </li>
+                        )}
+                    </ul>
                 </div>
 
                 {/* Groups & Expenses Section */}
@@ -164,15 +190,14 @@ function DashboardComponent() {
                     </h2>
                     <div className="mb-4 text-gray-700">
                         {/* The `|| "0"` fallback is no longer strictly necessary but is safe to keep */}
-                        Total Groups: <span className="font-bold text-green-600">{groups.length || "0"}</span>
+                        Total Groups: <span className="font-bold text-green-600">{groups?.length ?? "0"}</span>
                     </div>
                     <div>
                         <h3 className="font-medium text-gray-700 mb-2">Recent Expenses</h3>
                         <ul className="space-y-1">
-                            {groups.length === 0 ? (
+                            {!Array.isArray(groups) || groups.length === 0 ? (
                                 <li className="text-gray-400 italic">No groups found</li>
                             ) : (
-                                // Add a proper type instead of 'any'
                                 groups.map((group: { _id: string, name: string }) => (
                                     <li key={group._id}
                                         className="text-gray-700 bg-gray-100 p-2 rounded-md flex items-center gap-2 hover:bg-gray-200 transition-colors cursor-pointer">
