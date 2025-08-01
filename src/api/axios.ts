@@ -8,10 +8,10 @@ interface ErrorResponse {
     error: string;
 }
 
-const API_URL: string = "http://localhost:8080/api";
+const API_URL: string = "https://lit-taiga-14830-0bf1567c8578.herokuapp.com/api/";
 
 const axiosInstance = axios.create({
-    baseURL: API_URL, // <-- FIX: Corrected typo from baseU4 to baseURL
+    baseURL: API_URL,
     withCredentials: true,
     timeout: 10000,
 });
@@ -50,10 +50,8 @@ axiosInstance.interceptors.response.use(
                 return axiosInstance(originalRequest);
 
             } catch (refreshError) {
-                // If the refresh token fails, redirect to login
                 console.error("Session expired. Redirecting to login.");
-                // In a real app, you might want to clear local storage or state here
-                window.location.href = "/login";
+                // window.location.href = "/login";
                 return Promise.reject(refreshError);
             }
         }

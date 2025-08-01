@@ -1,6 +1,6 @@
 import {createFileRoute} from '@tanstack/react-router'
 import {useAppStore} from "../store/AppStore.ts";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 export const Route = createFileRoute('/dashboard')({
     component: RouteComponent,
@@ -8,34 +8,11 @@ export const Route = createFileRoute('/dashboard')({
 
 function RouteComponent() {
     const user = useAppStore(state => state.user);
-    const friendRequests = useAppStore(state => state.friendRequests);
-    const groups = useAppStore(state => state.groups);
-    const fetchGroups = useAppStore(state => state.fetchGroups);
-    const [loadingGroups, setLoadingGroups] = useState(true);
 
     useEffect(() => {
         useAppStore.getState().verifyAuth();
-        useAppStore.getState().fetchFriendRequests().catch((error) => {
-            console.error("Error fetching friend requests:", error)
-        });
-
-        setLoadingGroups(true);
-        fetchGroups()
-            .catch((err) => {
-                console.error("Error fetching groups:", err);
-            })
-            .finally(() => setLoadingGroups(false));
     }, []);
 
-    // async function sendFriendRequest() {
-    //     try {
-    //         await friendService.sendFriendRequest(friendId);
-    //         console.log("Friend request sent successfully");
-    //         await useAppStore.getState().fetchFriendRequests(); // Refresh requests
-    //     } catch (error) {
-    //         console.log("Friend request failed:", error);
-    //     }
-    // }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-100 p-4">
@@ -52,25 +29,7 @@ function RouteComponent() {
                         </svg>
                         Friend Requests
                     </h2>
-                    {/*<Input value={friendId} onChange={(e) => setFriendId(e.target.value)}/>*/}
-                    {/*<button onClick={sendFriendRequest} className="bg-blue-500 text-white px-3 py-1 rounded">Send Friend Request</button>*/}
-                    <div className="mt-4">
-                        <h3 className="font-medium text-gray-700 mb-2">Pending Requests</h3>
-                        <ul className="space-y-2">
-                            {friendRequests.length === 0 && (
-                                <li className="text-gray-400 italic">No pending requests</li>
-                            )}
-                            {friendRequests.map((request, index) => (
-                                <li
-                                    key={request._id ?? index}
-                                    className="bg-blue-50 hover:bg-blue-100 transition rounded px-3 py-2 flex items-center gap-2 shadow-sm"
-                                >
-                                    <span
-                                        className="font-semibold text-blue-700">{request.name ?? request.email ?? request._id ?? JSON.stringify(request)}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+
                 </div>
 
                 {/* Groups & Expenses Section */}
@@ -86,25 +45,19 @@ function RouteComponent() {
                     <div className="mb-4 text-gray-700">
                         Total Groups:{" "}
                         <span className="font-bold text-green-600">
-                            {loadingGroups ? "Loading..." : groups.length}
+                            "Loading..."
                         </span>
                     </div>
                     <div>
                         <h3 className="font-medium text-gray-700 mb-2">Recent Expenses</h3>
                         <ul className="space-y-1">
-                            {loadingGroups && (
-                                <li className="text-gray-400 italic">Loading...</li>
-                            )}
-                            {!loadingGroups && groups.length === 0 && (
-                                <li className="text-gray-400 italic">No groups found</li>
-                            )}
-                            {!loadingGroups && groups.map((group, idx) => (
-                                <li key={group._id ?? idx} className="bg-green-50 rounded px-2 py-1">
-                                    {group.name} - <span className="font-semibold text-green-700">
-                                        ${group.totalExpense ?? "0"}
+
+                            <li className="text-gray-400 italic">Loading...</li>
+                            <li className="text-gray-400 italic">No groups found</li>
+                            <li className="bg-green-50 rounded px-2 py-1">
+                                - <span className="font-semibold text-green-700">
                                     </span>
-                                </li>
-                            ))}
+                            </li>
                         </ul>
                     </div>
                 </div>
