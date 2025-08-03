@@ -13,7 +13,7 @@ export const groupService = {
     listGroupMembers: async (groupId: string) => {
         return await axiosInstance.get(`groups/${groupId}/members`)
     },
-    listGroupExpense: async (groupId: string) => {
+    getGroupExpenses: async (groupId: string) => {
         return await axiosInstance.get(`expense/${groupId}`)
     },
     createExpense: async (expense: {
