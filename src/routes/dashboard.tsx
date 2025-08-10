@@ -80,7 +80,7 @@ function DashboardComponent() {
     // Group creation modal state
     const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
     const [newGroupName, setNewGroupName] = useState("");
-    const handleCreateGroup = () => setShowCreateGroupModal(true);
+    // const handleCreateGroup = () => setShowCreateGroupModal(true);
     const handleSubmitCreateGroup = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newGroupName.trim()) return;
