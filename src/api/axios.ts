@@ -7,7 +7,8 @@ interface ErrorResponse {
 }
 
 // const API_URL: string = "https://lit-taiga-14830-0bf1567c8578.herokuapp.com/api/";
-const API_URL: string = import.meta.env.DOMAIN == 'production' ? import.meta.env.VITE_API_URL : "http://localhost:8080/api/";
+// const API_URL: string = import.meta.env.DOMAIN == 'production' ? import.meta.env.VITE_API_URL : "http://localhost:8080/api/";
+const API_URL: string = "https://backend.thevivekyadav.me/api/"
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
