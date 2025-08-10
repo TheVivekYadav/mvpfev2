@@ -1,5 +1,3 @@
-import React from "react";
-
 export function GroupExpensesModal({show, onClose, expensesGroupName, groupExpenses}: any) {
     if (!show) return null;
 

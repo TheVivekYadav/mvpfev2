@@ -13,12 +13,12 @@ import {GroupExpensesModal} from "../components/GroupExpensesModal.tsx";
 
 export const Route = createFileRoute("/dashboard")({
     beforeLoad: async () => {
-        // This authentication logic is correct
         const {verifyAuth, user} = useAppStore.getState();
-        if (user) return;
-        await verifyAuth();
-        if (!useAppStore.getState().user) {
-            throw redirect({to: "/login", search: {redirect: "/dashboard"}});
+        if (!user) {
+            await verifyAuth();
+            if (!useAppStore.getState().user) {
+                throw redirect({to: "/login", search: {redirect: "/dashboard"}});
+            }
         }
     },
     loader: async () => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/dashboard")({
             };
         } catch (error) {
             console.error("Failed to load dashboard data:", error);
-            // FIX: Return a consistent shape with empty arrays on error
+            // Return a consistent shape with empty arrays on error
             return {groups: [], friendRequest: [], friends: []};
         }
     },
@@ -44,11 +44,18 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardComponent() {
-    const user = useAppStore((state) => state.user)!;
-
     const {groups, friendRequest, friends} = Route.useLoaderData();
-
     const router = useRouter();
+    const user = useAppStore((state) => state.user);
+
+    // If user is not present, don't render dashboard (prevents flicker)
+    if (!user) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <span className="text-lg text-gray-500">Loading dashboard...</span>
+            </div>
+        );
+    }
 
     // Friend request state
     const [friendID, setFriendID] = useState("");
@@ -161,11 +168,9 @@ function DashboardComponent() {
     const [expensesGroupName, setExpensesGroupName] = useState<string>("");
     const handleViewGroupExpenses = async (groupId: string) => {
         try {
-            console.log(`Group ID:- ${groupId}`)
             const res = await groupService.getGroupExpenses(groupId);
 
             setGroupExpenses(res.data.expenses || []);
-            console.log("Group Expenses:", res.data);
             const group = groups.find((g: any) => g._id === groupId);
             setExpensesGroupName(group?.name || "Group Expenses");
             setShowExpensesModal(true);
@@ -175,12 +180,12 @@ function DashboardComponent() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-100 p-4">
-            <h1 className="font-bold text-2xl mb-1 text-gray-800">
-                Dashboard - {user?.name}
+        <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 p-4">
+            <h1 className="font-bold text-2xl mb-1 text-blue-900 drop-shadow">
+                Dashboard - <span className="text-green-700">{user?.name}</span>
             </h1>
-            <p className="text-gray-600 mb-6">
-                User Id: <span className="font-mono">{user?._id}</span>
+            <p className="text-blue-700 mb-6">
+                User Id: <span className="font-mono bg-blue-50 px-2 py-1 rounded">{user?._id}</span>
             </p>
             <div className="flex flex-col md:flex-row gap-6 w-full max-w-6xl mx-auto">
                 <FriendRequestsSection
@@ -218,7 +223,8 @@ function DashboardComponent() {
                 onClose={() => setShowAddMemberModal(false)}
                 addMemberUserIds={addMemberUserIds}
                 setAddMemberUserIds={setAddMemberUserIds}
-                handleSubmitAddMember={handleSubmitAddMember}></AddMemberModal>
+                handleSubmitAddMember={handleSubmitAddMember}
+            />
             <AddExpenseModal
                 show={showAddExpenseModal}
                 onClose={() => {
