@@ -10,7 +10,7 @@ function RouteComponent() {
             className="flex flex-col items-center min-h-[80vh] bg-gradient-to-br from-blue-50 via-purple-50 to-green-50 py-8 px-2">
             <section className="w-full max-w-3xl text-center mb-10">
                 <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 drop-shadow">
-                    Welcome to ChaiCode Split
+                    Welcome to Expense Split
                 </h1>
                 <p className="text-lg md:text-xl text-gray-700 mb-6">
                     Effortlessly split bills, manage group expenses, and keep your friendships stress-free.
