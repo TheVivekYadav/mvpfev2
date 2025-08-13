@@ -8,7 +8,7 @@ type SettlementInput = {
 
 export const settlement = {
     create: async ({ groupId, paidBy, amount }: SettlementInput) => {
-        return await axiosInstance.post("/settlements", {
+        return await axiosInstance.post("/settlement/create", {
             groupId,
             paidBy,
             amount
