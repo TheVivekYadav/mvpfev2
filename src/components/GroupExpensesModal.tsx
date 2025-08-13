@@ -33,6 +33,7 @@ export function GroupExpensesModal({show, onClose, expensesGroupName, groupExpen
                                     </div>
                                     <span className="ml-auto text-green-700 font-bold text-lg">
                                         ₹{expense.amount}
+                                        
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-gray-600">

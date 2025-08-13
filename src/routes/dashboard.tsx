@@ -1,15 +1,16 @@
-import {createFileRoute, redirect, useRouter} from "@tanstack/react-router";
-import {useAppStore} from "../store/AppStore.ts";
-import {groupService} from "../api/groupService.ts";
-import React, {useState} from "react";
-import {friendService} from "../api/friendService.ts";
-import {FriendRequestsSection} from "../components/FriendRequestSection.tsx";
-import {GroupsSection} from "../components/GroupSection.tsx";
-import {GroupMembersModal} from "../components/GroupMembersModal.tsx";
-import {CreateGroupModal} from "../components/CreateGroupModal.tsx";
-import {AddMemberModal} from "../components/AddMemberModal.tsx";
-import {AddExpenseModal} from "../components/AddExpenseModal.tsx";
-import {GroupExpensesModal} from "../components/GroupExpensesModal.tsx";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import React, { useState } from "react";
+import { friendService } from "../api/friendService.ts";
+import { groupService } from "../api/groupService.ts";
+import { settlement } from "../api/settlement";
+import { AddExpenseModal } from "../components/AddExpenseModal.tsx";
+import { AddMemberModal } from "../components/AddMemberModal.tsx";
+import { CreateGroupModal } from "../components/CreateGroupModal.tsx";
+import { FriendRequestsSection } from "../components/FriendRequestSection.tsx";
+import { GroupExpensesModal } from "../components/GroupExpensesModal.tsx";
+import { GroupMembersModal } from "../components/GroupMembersModal.tsx";
+import { GroupsSection } from "../components/GroupSection.tsx";
+import { useAppStore } from "../store/AppStore.ts";
 
 export const Route = createFileRoute("/dashboard")({
     beforeLoad: async () => {
@@ -179,6 +180,20 @@ function DashboardComponent() {
         }
     };
 
+    // Settlement handler
+    const handleSettleUp = async (groupId: string) => {
+        if (!user) return;
+        try {
+            // For demo: settle up with 0 amount (or prompt for amount if needed)
+            await settlement.create({ groupId, paidBy: user._id, amount: 0 });
+            await router.invalidate();
+            alert("Settlement created!");
+        } catch (error) {
+            console.error("Failed to settle up:", error);
+            alert("Failed to settle up.");
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 p-4">
             <h1 className="font-bold text-2xl mb-1 text-blue-900 drop-shadow">
@@ -203,6 +218,7 @@ function DashboardComponent() {
                     handleViewGroupExpenses={handleViewGroupExpenses}
                     handleCreateGroup={() => setShowCreateGroupModal(true)}
                     handleShowAddExpense={handleShowAddExpense}
+                    handleSettleUp={handleSettleUp}
                 />
             </div>
             <GroupMembersModal
