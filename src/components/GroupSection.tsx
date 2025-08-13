@@ -5,6 +5,7 @@ export function GroupsSection({
                                   handleViewGroupExpenses,
                                   handleCreateGroup,
                                   handleShowAddExpense,
+                                  handleSettleUp, // <-- add this prop
                               }: any) {
     return (
         <div className="flex-1 bg-white rounded-xl shadow-lg p-6 min-w-[220px] border border-gray-100">
@@ -76,6 +77,14 @@ export function GroupsSection({
                                     onClick={() => handleShowAddExpense(group._id)}
                                 >
                                     ＋₹
+                                </button>
+                                <button
+                                    className="ml-2 p-1 rounded-full bg-orange-100 hover:bg-orange-200 transition-colors text-orange-700"
+                                    aria-label="Settle Up"
+                                    type="button"
+                                    onClick={() => handleSettleUp(group._id)}
+                                >
+                                    💰
                                 </button>
                             </li>
                         ))
