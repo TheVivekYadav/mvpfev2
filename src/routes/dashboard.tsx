@@ -181,11 +181,11 @@ function DashboardComponent() {
     };
 
     // Settlement handler
-    const handleSettleUp = async (groupId: string) => {
+    const handleSettleUp = async (groupId: string, paidTo) => {
         if (!user) return;
         try {
             // For demo: settle up with 0 amount (or prompt for amount if needed)
-            await settlement.create({ groupId, paidBy: user._id, amount: 0 });
+            await settlement.create({ groupId, paidTo: user._id, amount: 10 });
             await router.invalidate();
             alert("Settlement created!");
         } catch (error) {

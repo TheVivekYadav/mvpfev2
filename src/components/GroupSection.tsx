@@ -5,7 +5,7 @@ export function GroupsSection({
                                   handleViewGroupExpenses,
                                   handleCreateGroup,
                                   handleShowAddExpense,
-                                  handleSettleUp, // <-- add this prop
+                                  handleSettleUp, 
                               }: any) {
     return (
         <div className="flex-1 bg-white rounded-xl shadow-lg p-6 min-w-[220px] border border-gray-100">

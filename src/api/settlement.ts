@@ -2,15 +2,15 @@ import axiosInstance from "./axios";
 
 type SettlementInput = {
     groupId: string;
-    paidBy: string;
+    paidTo: string;
     amount: number;
 };
 
 export const settlement = {
-    create: async ({ groupId, paidBy, amount }: SettlementInput) => {
+    create: async ({ groupId, paidTo, amount }: SettlementInput) => {
         return await axiosInstance.post("/settlement/create", {
             groupId,
-            paidBy,
+            paidTo,
             amount
         });
     }
