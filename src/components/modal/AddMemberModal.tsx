@@ -1,4 +1,29 @@
-export function AddMemberModal({show, onClose, addMemberUserIds, setAddMemberUserIds, handleSubmitAddMember}: any) {
+import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { groupService } from "../../api/groupService";
+
+export function AddMemberModal({ show, onClose }: any) {
+    const router = useRouter();
+    const [addMemberGroupId, setAddMemberGroupId] = useState<string | null>(null);
+    const [addMemberUserIds, setAddMemberUserIds] = useState<string>("");
+
+    
+
+    const handleSubmitAddMember = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!addMemberGroupId) return;
+        const userIds = addMemberUserIds.split(",").map((id: string) => id.trim()).filter(Boolean);
+        if (userIds.length === 0) return;
+        try {
+            await groupService.addMember(addMemberGroupId, userIds);
+            // setShowAddMemberModal(false);
+            setAddMemberGroupId(null);
+            setAddMemberUserIds("");
+            await router.invalidate();
+        } catch (error) {
+            console.error("Failed to add members:", error);
+        }
+    };
     if (!show) return null;
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
@@ -9,7 +34,7 @@ export function AddMemberModal({show, onClose, addMemberUserIds, setAddMemberUse
                     aria-label="Close"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
                 <h3 className="text-lg font-bold mb-4 text-blue-700">Add Members</h3>

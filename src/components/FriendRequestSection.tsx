@@ -1,19 +1,47 @@
+import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { friendService } from "../api/friendService";
+
+interface FriendRequestSectionProps {
+    friendRequest: any[];
+    friends: any[];
+}
+
 export function FriendRequestsSection({
-                                          friendRequest,
-                                          friends,
-                                          friendID,
-                                          setFriendID,
-                                          handleSendFriendRequest,
-                                          handleAcceptFriendRequest,
-                                      }: any) {
+    friendRequest,
+    friends,
+}: FriendRequestSectionProps) {
+
+    const router = useRouter();
+
+    const [friendID, setFriendID] = useState("");
+
+    // Friend request state
+    const handleSendFriendRequest = async () => {
+        if (!friendID) return;
+        try {
+            await friendService.sendFriendRequest(friendID);
+            await router.invalidate();
+        } catch (error) {
+            console.error("Error sending friend request:", error);
+        }
+    };
+    const handleAcceptFriendRequest = async (id: string) => {
+        try {
+            await friendService.acceptFriendRequest(id);
+            await router.invalidate();
+        } catch (error) {
+            console.error("Failed to accept friend request:", error);
+        }
+    };
     return (
         <div className="flex-1 bg-white rounded-xl shadow-lg p-6 min-w-[220px] border border-gray-100">
             <h2 className="font-semibold mb-3 text-blue-700 text-lg flex items-center gap-2">
                 <svg className="w-5 h-5 text-blue-400" aria-hidden="true" fill="none" stroke="currentColor"
-                     strokeWidth="2"
-                     viewBox="0 0 24 24">
+                    strokeWidth="2"
+                    viewBox="0 0 24 24">
                     <path
-                        d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 Friend Requests
             </h2>
@@ -38,7 +66,7 @@ export function FriendRequestsSection({
                         >
                             <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path
-                                    d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2-7 4v1a1 1 0 001 1h12a1 1 0 001-1v-1c0-2-3-4-7-4z"/>
+                                    d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2-7 4v1a1 1 0 001 1h12a1 1 0 001-1v-1c0-2-3-4-7-4z" />
                             </svg>
                             <span className="font-medium flex-1">{friend.name}</span>
                             <div className="hidden group-hover:flex gap-1 ml-auto">
@@ -49,8 +77,8 @@ export function FriendRequestsSection({
                                     onClick={() => handleAcceptFriendRequest(friend.id)}
                                 >
                                     <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
-                                         strokeWidth="2"
-                                         viewBox="0 0 24 24">
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24">
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -64,8 +92,8 @@ export function FriendRequestsSection({
                                     type="button"
                                 >
                                     <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor"
-                                         strokeWidth="2"
-                                         viewBox="0 0 24 24">
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24">
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -91,7 +119,7 @@ export function FriendRequestsSection({
                         >
                             <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path
-                                    d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2-7 4v1a1 1 0 001 1h12a1 1 0 001-1v-1c0-2-3-4-7-4z"/>
+                                    d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2-7 4v1a1 1 0 001 1h12a1 1 0 001-1v-1c0-2-3-4-7-4z" />
                             </svg>
                             <span className="font-medium">{friend.name}</span>
                         </li>

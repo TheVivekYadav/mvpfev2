@@ -1,4 +1,26 @@
-export function CreateGroupModal({show, onClose, newGroupName, setNewGroupName, handleSubmitCreateGroup}: any) {
+import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { groupService } from "../../api/groupService";
+
+export function CreateGroupModal({ show, onClose }: any) {
+
+    const router = useRouter();
+
+    const [newGroupName, setNewGroupName] = useState("");
+
+    const handleSubmitCreateGroup = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newGroupName.trim()) return;
+        try {
+            await groupService.createGroup(newGroupName.trim());
+            // setShowCreateGroupModal(false);
+            setNewGroupName("");
+            await router.invalidate();
+        } catch (error) {
+            console.error("Failed to create group:", error);
+        }
+    };
+
     if (!show) return null;
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
@@ -9,7 +31,7 @@ export function CreateGroupModal({show, onClose, newGroupName, setNewGroupName, 
                     aria-label="Close"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
                 <h3 className="text-lg font-bold mb-4 text-green-700">Create New Group</h3>
