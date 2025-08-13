@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { friendService } from "../api/friendService.ts";
 import { groupService } from "../api/groupService.ts";
 import { settlement } from "../api/settlement";
-import { AddExpenseModal } from "../components/AddExpenseModal.tsx";
-import { AddMemberModal } from "../components/AddMemberModal.tsx";
-import { CreateGroupModal } from "../components/CreateGroupModal.tsx";
+import { AddExpenseModal } from "../components/modal/AddExpenseModal.tsx";
+import { AddMemberModal } from "../components/modal/AddMemberModal.tsx";
+import { CreateGroupModal } from "../components/modal/CreateGroupModal.tsx";
 import { FriendRequestsSection } from "../components/FriendRequestSection.tsx";
-import { GroupExpensesModal } from "../components/GroupExpensesModal.tsx";
-import { GroupMembersModal } from "../components/GroupMembersModal.tsx";
+import { GroupExpensesModal } from "../components/modal/GroupExpensesModal.tsx";
+import { GroupMembersModal } from "../components/modal/GroupMembersModal.tsx";
 import { GroupsSection } from "../components/GroupSection.tsx";
 import { useAppStore } from "../store/AppStore.ts";
 

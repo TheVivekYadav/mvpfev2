@@ -1,4 +1,4 @@
-import {AddExpense} from "./AddExpense.tsx";
+import { AddExpense } from "../AddExpense.tsx";
 
 export function AddExpenseModal({show, onClose, groupOptions, userOptions, handleAddExpense}: any) {
     if (!show) return null;
