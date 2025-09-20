@@ -1,18 +1,19 @@
-import * as React from 'react'
-import {createRootRoute, Outlet} from '@tanstack/react-router'
-import {Navbar} from "../components/Nav.tsx";
-import {Footer} from "../components/Footer.tsx";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Outlet, createRootRoute } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export const Route = createRootRoute({
     component: RootComponent,
 })
 
 function RootComponent() {
+
     return (
-        <React.Fragment>
-            <Navbar/>
-            <Outlet/>
-            <Footer/>
-        </React.Fragment>
+        <>
+            <Outlet />
+
+            {/* <TanStackRouterDevtools />
+            <ReactQueryDevtools initialIsOpen={false} /> */}
+        </>
     )
 }
