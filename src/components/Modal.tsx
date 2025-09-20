@@ -10,6 +10,9 @@ interface ModalProps {
 
 export default function CuteModal({ isOpen, onClose, title, children }: ModalProps) {
     if (!isOpen) return null;
+    if (!onClose) {
+        console.log('closed')
+    }
 
     return (
         // Backdrop with a blur effect
