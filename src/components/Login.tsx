@@ -1,46 +1,39 @@
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useAppStore } from "../store/AppStore";
+import { showErrorToast, showSuccessToast } from "../utils/toast";
 import Button from "./ui/Button.tsx";
 import Input from "./ui/Input.tsx";
-import {useState} from "react";
-import {useNavigate} from "@tanstack/react-router";
-import {useAppStore} from "../store/AppStore";
 
 export function Login() {
-    // 1. Add state for loading and error messages
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
 
     const navigate = useNavigate();
     const login = useAppStore(state => state.login);
 
-    // 2. Use a form and handle the onSubmit event
-    async function handleOnSubmit(e: React.FormEvent) {
-        e.preventDefault(); // Prevent the default form submission
-        setError(""); // Clear previous errors
+    const loginMutation = useMutation({
+        mutationFn: () => login(email, password),
 
+        onSuccess: () => {
+            showSuccessToast("Login successful!");
+            navigate({ to: "/dashboard" });
+        },
+
+        onError: (error: Error) => {
+            showErrorToast(error.message || "An unexpected error occurred.");
+            setPassword("");
+        },
+    });
+
+    function handleOnSubmit(e: React.FormEvent) {
+        e.preventDefault();
         if (!email || !password) {
-            setError("Please fill in all fields.");
+            showErrorToast("Please fill in all fields.");
             return;
         }
-
-        setIsLoading(true); // Set loading to true
-        try {
-            const success = await login(email, password);
-            if (success) {
-                navigate({to: "/dashboard"});
-            } else {
-                // 3. Set a user-friendly error message instead of an alert
-                setError("Login failed. Please check your credentials.");
-                // 4. Only clear the password on failure for better UX
-                setPassword("");
-            }
-        } catch (e) {
-            setError("An unexpected error occurred. Please try again.");
-            setPassword("");
-        } finally {
-            setIsLoading(false); // Set loading to false when done
-        }
+        loginMutation.mutate();
     }
 
     return (
@@ -55,7 +48,7 @@ export function Login() {
                         onChange={e => setEmail(e.target.value)}
                         className="block"
                         placeholder="contact@thevivekyadav.me"
-                        disabled={isLoading}
+                        disabled={loginMutation.isPending}
                     />
 
                     <label htmlFor="password" className="sr-only">Password</label>
@@ -66,13 +59,17 @@ export function Login() {
                         className="block"
                         type="password"
                         placeholder="••••••••••"
-                        disabled={isLoading}
+                        disabled={loginMutation.isPending}
                     />
 
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                    {loginMutation.isError && (
+                        <p className="text-sm text-red-600">
+                            {loginMutation.error.message}
+                        </p>
+                    )}
 
-                    <Button type="submit" disabled={isLoading} className="w-full">
-                        {isLoading ? "Logging in..." : "Login"}
+                    <Button type="submit" disabled={loginMutation.isPending} className="w-full">
+                        {loginMutation.isPending ? "Logging in..." : "Login"}
                     </Button>
                 </form>
             </div>
