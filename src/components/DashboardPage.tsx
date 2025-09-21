@@ -1,7 +1,11 @@
+import { useAppStore } from "../store/AppStore";
 import GroupCard from "./ui/GroupCard";
 import SummaryCard from "./ui/SummaryCard";
 
 function DashboardPage() {
+
+    const { user } = useAppStore();
+
     const groupsData = [
         { imageUrl: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500', title: 'Trip to Bali', description: 'Planning our upcoming vacation!', members: [{ name: 'A', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg' }, { name: 'B', avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg' }] },
         { imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500', title: 'Apartment 4B', description: 'Monthly household expenses.', members: [{ name: 'C', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg' }, { name: 'D', avatarUrl: 'https://randomuser.me/api/portraits/women/2.jpg' }, { name: 'E', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg' }] },
@@ -12,13 +16,8 @@ function DashboardPage() {
         <div className="max-w-7xl mx-auto p-4 md:p-8">
             {/* Header section */}
             <header className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Welcome back, Alex!</h1>
-                <button className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 5a.5.5 0 01.5.5v4h4a.5.5 0 010 1h-4v4a.5.5 0 01-1 0v-4h-4a.5.5 0 010-1h4v-4A.5.5 0 0110 5z" clipRule="evenodd" />
-                    </svg>
-                    Create Group
-                </button>
+                <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user ? user.name.toUpperCase() : "Loading..."}</h1>
+
             </header>
 
             {/* Summary cards section */}

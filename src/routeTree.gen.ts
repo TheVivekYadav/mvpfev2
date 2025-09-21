@@ -16,13 +16,13 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
 import { Route as DashboardDashboardIndexRouteImport } from './routes/_dashboard/dashboard/index'
-import { Route as DashboardDashboardGroupsRouteImport } from './routes/_dashboard/dashboard/groups'
-import { Route as DashboardDashboardGroupDetailRouteImport } from './routes/_dashboard/dashboard/_group-detail'
 import { Route as DashboardDashboardSettingsIndexRouteImport } from './routes/_dashboard/dashboard/settings/index'
-import { Route as DashboardDashboardGroupDetailGroupsSettleupIndexRouteImport } from './routes/_dashboard/dashboard/_group-detail/groups/settleup/index'
-import { Route as DashboardDashboardGroupDetailGroupsExpenseIndexRouteImport } from './routes/_dashboard/dashboard/_group-detail/groups/expense/index'
-import { Route as DashboardDashboardGroupDetailGroupsGroupIdGroupIdRouteImport } from './routes/_dashboard/dashboard/_group-detail/groups/_groupId/$groupId'
-import { Route as DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRouteImport } from './routes/_dashboard/dashboard/_group-detail/groups/_groupId/balances/index'
+import { Route as DashboardDashboardGroupsIndexRouteImport } from './routes/_dashboard/dashboard/groups/index'
+import { Route as DashboardDashboardGroupsGroupIdRouteImport } from './routes/_dashboard/dashboard/groups/$groupId'
+import { Route as DashboardDashboardGroupsGroupIdIndexRouteImport } from './routes/_dashboard/dashboard/groups/$groupId/index'
+import { Route as DashboardDashboardGroupsGroupIdSettleupRouteImport } from './routes/_dashboard/dashboard/groups/$groupId/settleup'
+import { Route as DashboardDashboardGroupsGroupIdExpensesRouteImport } from './routes/_dashboard/dashboard/groups/$groupId/expenses'
+import { Route as DashboardDashboardGroupsGroupIdBalancesRouteImport } from './routes/_dashboard/dashboard/groups/$groupId/balances'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -59,46 +59,47 @@ const DashboardDashboardIndexRoute = DashboardDashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardDashboardRoute,
 } as any)
-const DashboardDashboardGroupsRoute =
-  DashboardDashboardGroupsRouteImport.update({
-    id: '/groups',
-    path: '/groups',
-    getParentRoute: () => DashboardDashboardRoute,
-  } as any)
-const DashboardDashboardGroupDetailRoute =
-  DashboardDashboardGroupDetailRouteImport.update({
-    id: '/_group-detail',
-    getParentRoute: () => DashboardDashboardRoute,
-  } as any)
 const DashboardDashboardSettingsIndexRoute =
   DashboardDashboardSettingsIndexRouteImport.update({
     id: '/settings/',
     path: '/settings/',
     getParentRoute: () => DashboardDashboardRoute,
   } as any)
-const DashboardDashboardGroupDetailGroupsSettleupIndexRoute =
-  DashboardDashboardGroupDetailGroupsSettleupIndexRouteImport.update({
-    id: '/groups/settleup/',
-    path: '/groups/settleup/',
-    getParentRoute: () => DashboardDashboardGroupDetailRoute,
+const DashboardDashboardGroupsIndexRoute =
+  DashboardDashboardGroupsIndexRouteImport.update({
+    id: '/groups/',
+    path: '/groups/',
+    getParentRoute: () => DashboardDashboardRoute,
   } as any)
-const DashboardDashboardGroupDetailGroupsExpenseIndexRoute =
-  DashboardDashboardGroupDetailGroupsExpenseIndexRouteImport.update({
-    id: '/groups/expense/',
-    path: '/groups/expense/',
-    getParentRoute: () => DashboardDashboardGroupDetailRoute,
-  } as any)
-const DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute =
-  DashboardDashboardGroupDetailGroupsGroupIdGroupIdRouteImport.update({
-    id: '/groups/_groupId/$groupId',
+const DashboardDashboardGroupsGroupIdRoute =
+  DashboardDashboardGroupsGroupIdRouteImport.update({
+    id: '/groups/$groupId',
     path: '/groups/$groupId',
-    getParentRoute: () => DashboardDashboardGroupDetailRoute,
+    getParentRoute: () => DashboardDashboardRoute,
   } as any)
-const DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute =
-  DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRouteImport.update({
-    id: '/groups/_groupId/balances/',
-    path: '/groups/balances/',
-    getParentRoute: () => DashboardDashboardGroupDetailRoute,
+const DashboardDashboardGroupsGroupIdIndexRoute =
+  DashboardDashboardGroupsGroupIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardDashboardGroupsGroupIdRoute,
+  } as any)
+const DashboardDashboardGroupsGroupIdSettleupRoute =
+  DashboardDashboardGroupsGroupIdSettleupRouteImport.update({
+    id: '/settleup',
+    path: '/settleup',
+    getParentRoute: () => DashboardDashboardGroupsGroupIdRoute,
+  } as any)
+const DashboardDashboardGroupsGroupIdExpensesRoute =
+  DashboardDashboardGroupsGroupIdExpensesRouteImport.update({
+    id: '/expenses',
+    path: '/expenses',
+    getParentRoute: () => DashboardDashboardGroupsGroupIdRoute,
+  } as any)
+const DashboardDashboardGroupsGroupIdBalancesRoute =
+  DashboardDashboardGroupsGroupIdBalancesRouteImport.update({
+    id: '/balances',
+    path: '/balances',
+    getParentRoute: () => DashboardDashboardGroupsGroupIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -107,14 +108,15 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
-  '/dashboard': typeof DashboardDashboardGroupDetailRouteWithChildren
-  '/dashboard/groups': typeof DashboardDashboardGroupsRoute
+  '/dashboard': typeof DashboardDashboardRouteWithChildren
   '/dashboard/': typeof DashboardDashboardIndexRoute
+  '/dashboard/groups/$groupId': typeof DashboardDashboardGroupsGroupIdRouteWithChildren
+  '/dashboard/groups': typeof DashboardDashboardGroupsIndexRoute
   '/dashboard/settings': typeof DashboardDashboardSettingsIndexRoute
-  '/dashboard/groups/$groupId': typeof DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute
-  '/dashboard/groups/expense': typeof DashboardDashboardGroupDetailGroupsExpenseIndexRoute
-  '/dashboard/groups/settleup': typeof DashboardDashboardGroupDetailGroupsSettleupIndexRoute
-  '/dashboard/groups/balances': typeof DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute
+  '/dashboard/groups/$groupId/balances': typeof DashboardDashboardGroupsGroupIdBalancesRoute
+  '/dashboard/groups/$groupId/expenses': typeof DashboardDashboardGroupsGroupIdExpensesRoute
+  '/dashboard/groups/$groupId/settleup': typeof DashboardDashboardGroupsGroupIdSettleupRoute
+  '/dashboard/groups/$groupId/': typeof DashboardDashboardGroupsGroupIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -123,12 +125,12 @@ export interface FileRoutesByTo {
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/dashboard': typeof DashboardDashboardIndexRoute
-  '/dashboard/groups': typeof DashboardDashboardGroupsRoute
+  '/dashboard/groups': typeof DashboardDashboardGroupsIndexRoute
   '/dashboard/settings': typeof DashboardDashboardSettingsIndexRoute
-  '/dashboard/groups/$groupId': typeof DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute
-  '/dashboard/groups/expense': typeof DashboardDashboardGroupDetailGroupsExpenseIndexRoute
-  '/dashboard/groups/settleup': typeof DashboardDashboardGroupDetailGroupsSettleupIndexRoute
-  '/dashboard/groups/balances': typeof DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute
+  '/dashboard/groups/$groupId/balances': typeof DashboardDashboardGroupsGroupIdBalancesRoute
+  '/dashboard/groups/$groupId/expenses': typeof DashboardDashboardGroupsGroupIdExpensesRoute
+  '/dashboard/groups/$groupId/settleup': typeof DashboardDashboardGroupsGroupIdSettleupRoute
+  '/dashboard/groups/$groupId': typeof DashboardDashboardGroupsGroupIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -138,14 +140,14 @@ export interface FileRoutesById {
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/_dashboard/dashboard': typeof DashboardDashboardRouteWithChildren
-  '/_dashboard/dashboard/_group-detail': typeof DashboardDashboardGroupDetailRouteWithChildren
-  '/_dashboard/dashboard/groups': typeof DashboardDashboardGroupsRoute
   '/_dashboard/dashboard/': typeof DashboardDashboardIndexRoute
+  '/_dashboard/dashboard/groups/$groupId': typeof DashboardDashboardGroupsGroupIdRouteWithChildren
+  '/_dashboard/dashboard/groups/': typeof DashboardDashboardGroupsIndexRoute
   '/_dashboard/dashboard/settings/': typeof DashboardDashboardSettingsIndexRoute
-  '/_dashboard/dashboard/_group-detail/groups/_groupId/$groupId': typeof DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute
-  '/_dashboard/dashboard/_group-detail/groups/expense/': typeof DashboardDashboardGroupDetailGroupsExpenseIndexRoute
-  '/_dashboard/dashboard/_group-detail/groups/settleup/': typeof DashboardDashboardGroupDetailGroupsSettleupIndexRoute
-  '/_dashboard/dashboard/_group-detail/groups/_groupId/balances/': typeof DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute
+  '/_dashboard/dashboard/groups/$groupId/balances': typeof DashboardDashboardGroupsGroupIdBalancesRoute
+  '/_dashboard/dashboard/groups/$groupId/expenses': typeof DashboardDashboardGroupsGroupIdExpensesRoute
+  '/_dashboard/dashboard/groups/$groupId/settleup': typeof DashboardDashboardGroupsGroupIdSettleupRoute
+  '/_dashboard/dashboard/groups/$groupId/': typeof DashboardDashboardGroupsGroupIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -156,13 +158,14 @@ export interface FileRouteTypes {
     | '/logout'
     | '/register'
     | '/dashboard'
-    | '/dashboard/groups'
     | '/dashboard/'
-    | '/dashboard/settings'
     | '/dashboard/groups/$groupId'
-    | '/dashboard/groups/expense'
-    | '/dashboard/groups/settleup'
-    | '/dashboard/groups/balances'
+    | '/dashboard/groups'
+    | '/dashboard/settings'
+    | '/dashboard/groups/$groupId/balances'
+    | '/dashboard/groups/$groupId/expenses'
+    | '/dashboard/groups/$groupId/settleup'
+    | '/dashboard/groups/$groupId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,10 +176,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/groups'
     | '/dashboard/settings'
+    | '/dashboard/groups/$groupId/balances'
+    | '/dashboard/groups/$groupId/expenses'
+    | '/dashboard/groups/$groupId/settleup'
     | '/dashboard/groups/$groupId'
-    | '/dashboard/groups/expense'
-    | '/dashboard/groups/settleup'
-    | '/dashboard/groups/balances'
   id:
     | '__root__'
     | '/'
@@ -185,14 +188,14 @@ export interface FileRouteTypes {
     | '/logout'
     | '/register'
     | '/_dashboard/dashboard'
-    | '/_dashboard/dashboard/_group-detail'
-    | '/_dashboard/dashboard/groups'
     | '/_dashboard/dashboard/'
+    | '/_dashboard/dashboard/groups/$groupId'
+    | '/_dashboard/dashboard/groups/'
     | '/_dashboard/dashboard/settings/'
-    | '/_dashboard/dashboard/_group-detail/groups/_groupId/$groupId'
-    | '/_dashboard/dashboard/_group-detail/groups/expense/'
-    | '/_dashboard/dashboard/_group-detail/groups/settleup/'
-    | '/_dashboard/dashboard/_group-detail/groups/_groupId/balances/'
+    | '/_dashboard/dashboard/groups/$groupId/balances'
+    | '/_dashboard/dashboard/groups/$groupId/expenses'
+    | '/_dashboard/dashboard/groups/$groupId/settleup'
+    | '/_dashboard/dashboard/groups/$groupId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -255,20 +258,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardIndexRouteImport
       parentRoute: typeof DashboardDashboardRoute
     }
-    '/_dashboard/dashboard/groups': {
-      id: '/_dashboard/dashboard/groups'
-      path: '/groups'
-      fullPath: '/dashboard/groups'
-      preLoaderRoute: typeof DashboardDashboardGroupsRouteImport
-      parentRoute: typeof DashboardDashboardRoute
-    }
-    '/_dashboard/dashboard/_group-detail': {
-      id: '/_dashboard/dashboard/_group-detail'
-      path: ''
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardDashboardGroupDetailRouteImport
-      parentRoute: typeof DashboardDashboardRoute
-    }
     '/_dashboard/dashboard/settings/': {
       id: '/_dashboard/dashboard/settings/'
       path: '/settings'
@@ -276,73 +265,87 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardSettingsIndexRouteImport
       parentRoute: typeof DashboardDashboardRoute
     }
-    '/_dashboard/dashboard/_group-detail/groups/settleup/': {
-      id: '/_dashboard/dashboard/_group-detail/groups/settleup/'
-      path: '/groups/settleup'
-      fullPath: '/dashboard/groups/settleup'
-      preLoaderRoute: typeof DashboardDashboardGroupDetailGroupsSettleupIndexRouteImport
-      parentRoute: typeof DashboardDashboardGroupDetailRoute
+    '/_dashboard/dashboard/groups/': {
+      id: '/_dashboard/dashboard/groups/'
+      path: '/groups'
+      fullPath: '/dashboard/groups'
+      preLoaderRoute: typeof DashboardDashboardGroupsIndexRouteImport
+      parentRoute: typeof DashboardDashboardRoute
     }
-    '/_dashboard/dashboard/_group-detail/groups/expense/': {
-      id: '/_dashboard/dashboard/_group-detail/groups/expense/'
-      path: '/groups/expense'
-      fullPath: '/dashboard/groups/expense'
-      preLoaderRoute: typeof DashboardDashboardGroupDetailGroupsExpenseIndexRouteImport
-      parentRoute: typeof DashboardDashboardGroupDetailRoute
-    }
-    '/_dashboard/dashboard/_group-detail/groups/_groupId/$groupId': {
-      id: '/_dashboard/dashboard/_group-detail/groups/_groupId/$groupId'
+    '/_dashboard/dashboard/groups/$groupId': {
+      id: '/_dashboard/dashboard/groups/$groupId'
       path: '/groups/$groupId'
       fullPath: '/dashboard/groups/$groupId'
-      preLoaderRoute: typeof DashboardDashboardGroupDetailGroupsGroupIdGroupIdRouteImport
-      parentRoute: typeof DashboardDashboardGroupDetailRoute
+      preLoaderRoute: typeof DashboardDashboardGroupsGroupIdRouteImport
+      parentRoute: typeof DashboardDashboardRoute
     }
-    '/_dashboard/dashboard/_group-detail/groups/_groupId/balances/': {
-      id: '/_dashboard/dashboard/_group-detail/groups/_groupId/balances/'
-      path: '/groups/balances'
-      fullPath: '/dashboard/groups/balances'
-      preLoaderRoute: typeof DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRouteImport
-      parentRoute: typeof DashboardDashboardGroupDetailRoute
+    '/_dashboard/dashboard/groups/$groupId/': {
+      id: '/_dashboard/dashboard/groups/$groupId/'
+      path: '/'
+      fullPath: '/dashboard/groups/$groupId/'
+      preLoaderRoute: typeof DashboardDashboardGroupsGroupIdIndexRouteImport
+      parentRoute: typeof DashboardDashboardGroupsGroupIdRoute
+    }
+    '/_dashboard/dashboard/groups/$groupId/settleup': {
+      id: '/_dashboard/dashboard/groups/$groupId/settleup'
+      path: '/settleup'
+      fullPath: '/dashboard/groups/$groupId/settleup'
+      preLoaderRoute: typeof DashboardDashboardGroupsGroupIdSettleupRouteImport
+      parentRoute: typeof DashboardDashboardGroupsGroupIdRoute
+    }
+    '/_dashboard/dashboard/groups/$groupId/expenses': {
+      id: '/_dashboard/dashboard/groups/$groupId/expenses'
+      path: '/expenses'
+      fullPath: '/dashboard/groups/$groupId/expenses'
+      preLoaderRoute: typeof DashboardDashboardGroupsGroupIdExpensesRouteImport
+      parentRoute: typeof DashboardDashboardGroupsGroupIdRoute
+    }
+    '/_dashboard/dashboard/groups/$groupId/balances': {
+      id: '/_dashboard/dashboard/groups/$groupId/balances'
+      path: '/balances'
+      fullPath: '/dashboard/groups/$groupId/balances'
+      preLoaderRoute: typeof DashboardDashboardGroupsGroupIdBalancesRouteImport
+      parentRoute: typeof DashboardDashboardGroupsGroupIdRoute
     }
   }
 }
 
-interface DashboardDashboardGroupDetailRouteChildren {
-  DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute: typeof DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute
-  DashboardDashboardGroupDetailGroupsExpenseIndexRoute: typeof DashboardDashboardGroupDetailGroupsExpenseIndexRoute
-  DashboardDashboardGroupDetailGroupsSettleupIndexRoute: typeof DashboardDashboardGroupDetailGroupsSettleupIndexRoute
-  DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute: typeof DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute
+interface DashboardDashboardGroupsGroupIdRouteChildren {
+  DashboardDashboardGroupsGroupIdBalancesRoute: typeof DashboardDashboardGroupsGroupIdBalancesRoute
+  DashboardDashboardGroupsGroupIdExpensesRoute: typeof DashboardDashboardGroupsGroupIdExpensesRoute
+  DashboardDashboardGroupsGroupIdSettleupRoute: typeof DashboardDashboardGroupsGroupIdSettleupRoute
+  DashboardDashboardGroupsGroupIdIndexRoute: typeof DashboardDashboardGroupsGroupIdIndexRoute
 }
 
-const DashboardDashboardGroupDetailRouteChildren: DashboardDashboardGroupDetailRouteChildren =
+const DashboardDashboardGroupsGroupIdRouteChildren: DashboardDashboardGroupsGroupIdRouteChildren =
   {
-    DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute:
-      DashboardDashboardGroupDetailGroupsGroupIdGroupIdRoute,
-    DashboardDashboardGroupDetailGroupsExpenseIndexRoute:
-      DashboardDashboardGroupDetailGroupsExpenseIndexRoute,
-    DashboardDashboardGroupDetailGroupsSettleupIndexRoute:
-      DashboardDashboardGroupDetailGroupsSettleupIndexRoute,
-    DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute:
-      DashboardDashboardGroupDetailGroupsGroupIdBalancesIndexRoute,
+    DashboardDashboardGroupsGroupIdBalancesRoute:
+      DashboardDashboardGroupsGroupIdBalancesRoute,
+    DashboardDashboardGroupsGroupIdExpensesRoute:
+      DashboardDashboardGroupsGroupIdExpensesRoute,
+    DashboardDashboardGroupsGroupIdSettleupRoute:
+      DashboardDashboardGroupsGroupIdSettleupRoute,
+    DashboardDashboardGroupsGroupIdIndexRoute:
+      DashboardDashboardGroupsGroupIdIndexRoute,
   }
 
-const DashboardDashboardGroupDetailRouteWithChildren =
-  DashboardDashboardGroupDetailRoute._addFileChildren(
-    DashboardDashboardGroupDetailRouteChildren,
+const DashboardDashboardGroupsGroupIdRouteWithChildren =
+  DashboardDashboardGroupsGroupIdRoute._addFileChildren(
+    DashboardDashboardGroupsGroupIdRouteChildren,
   )
 
 interface DashboardDashboardRouteChildren {
-  DashboardDashboardGroupDetailRoute: typeof DashboardDashboardGroupDetailRouteWithChildren
-  DashboardDashboardGroupsRoute: typeof DashboardDashboardGroupsRoute
   DashboardDashboardIndexRoute: typeof DashboardDashboardIndexRoute
+  DashboardDashboardGroupsGroupIdRoute: typeof DashboardDashboardGroupsGroupIdRouteWithChildren
+  DashboardDashboardGroupsIndexRoute: typeof DashboardDashboardGroupsIndexRoute
   DashboardDashboardSettingsIndexRoute: typeof DashboardDashboardSettingsIndexRoute
 }
 
 const DashboardDashboardRouteChildren: DashboardDashboardRouteChildren = {
-  DashboardDashboardGroupDetailRoute:
-    DashboardDashboardGroupDetailRouteWithChildren,
-  DashboardDashboardGroupsRoute: DashboardDashboardGroupsRoute,
   DashboardDashboardIndexRoute: DashboardDashboardIndexRoute,
+  DashboardDashboardGroupsGroupIdRoute:
+    DashboardDashboardGroupsGroupIdRouteWithChildren,
+  DashboardDashboardGroupsIndexRoute: DashboardDashboardGroupsIndexRoute,
   DashboardDashboardSettingsIndexRoute: DashboardDashboardSettingsIndexRoute,
 }
 

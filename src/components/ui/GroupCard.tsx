@@ -1,13 +1,29 @@
+import { Link } from "@tanstack/react-router";
 
-const GroupCard = ({ imageUrl, title, description, members }) => (
+interface GroupCardProps {
+    _id: string;
+    name: string;
+    isAdmin: boolean;
+    // Optional props for backward compatibility
+    imageUrl?: string;
+    title?: string;
+    description?: string;
+    members?: Array<{ name: string, avatarUrl: string }>;
+}
+
+
+const GroupCard = ({ _id, imageUrl = "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500", name, description = "desc of group", members = [
+    { name: 'Alice', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg' },
+    { name: 'Bob', avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg' },
+] }: GroupCardProps) => (
     <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden flex flex-col">
-        <img className="w-full h-40 object-cover" src={imageUrl} alt={title} />
+        <img className="w-full h-40 object-cover" src={imageUrl} alt={name} />
 
         {/* Set flex-grow to make this div fill available space */}
         <div className="p-4 flex flex-col flex-grow">
             {/* Title and description */}
             <div className="flex-grow">
-                <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+                <h3 className="text-xl font-bold text-gray-800">{name}</h3>
                 <p className="text-sm text-gray-500 mt-1">{description}</p>
             </div>
 
@@ -26,11 +42,12 @@ const GroupCard = ({ imageUrl, title, description, members }) => (
                 </div>
 
                 {/* Corrected "View" link */}
-                <a href="#" className="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                <Link to="/dashboard/groups/$groupId"
+                    params={{ groupId: _id }} className="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
                     View
                     {/* Unicode arrow character */}
                     <span className="font-bold text-lg">↗</span>
-                </a>
+                </Link>
             </div>
         </div>
     </div>

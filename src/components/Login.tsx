@@ -1,9 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAppStore } from "../store/AppStore";
 import { showErrorToast, showSuccessToast } from "../utils/toast";
-import Button from "./ui/Button.tsx";
 import Input from "./ui/Input.tsx";
 
 export function Login() {
@@ -37,42 +36,83 @@ export function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-100">
-            <div className="w-full max-w-lg mx-auto rounded-xl shadow-lg bg-white">
-                <h1 className="text-blue-700 p-6 text-center text-2xl font-bold">Login to continue...</h1>
-                <form onSubmit={handleOnSubmit} className="flex flex-col items-center justify-center p-6 gap-4">
-                    <label htmlFor="email" className="sr-only">Email</label>
-                    <Input
-                        id="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        className="block"
-                        placeholder="contact@thevivekyadav.me"
-                        disabled={loginMutation.isPending}
-                    />
+        <>
+            {/* Wrapper with a slightly more vibrant gradient background */}
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-gray-200 p-4">
 
-                    <label htmlFor="password" className="sr-only">Password</label>
-                    <Input
-                        id="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="block"
-                        type="password"
-                        placeholder="••••••••••"
-                        disabled={loginMutation.isPending}
-                    />
+                <div className="w-full max-w-md mx-auto rounded-2xl shadow-xl bg-white border border-gray-200/80">
 
-                    {loginMutation.isError && (
-                        <p className="text-sm text-red-600">
-                            {loginMutation.error.message}
+                    {/* Header Section */}
+                    <div className="p-8 border-b border-gray-200/80">
+                        <h2 className="text-2xl font-bold text-gray-800">Welcome Back!</h2>
+                        <p className="mt-1 text-sm text-gray-500">Please enter your details to sign in.</p>
+                    </div>
+
+                    {/* Form Section */}
+                    <form onSubmit={handleOnSubmit} className="flex flex-col p-8 gap-5">
+
+                        {/* Email Input */}
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                                Email Address
+                            </label>
+                            <Input
+                                id="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                className="w-full" // Pass w-full to your custom component if needed
+                                placeholder="you@example.com"
+                                disabled={loginMutation.isPending}
+                            />
+                        </div>
+
+                        {/* Password Input */}
+                        <div className="flex flex-col gap-1.5">
+                            <div className="flex justify-between items-center">
+                                <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <Input
+                                id="password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                className="w-full"
+                                type="password"
+                                placeholder="••••••••••"
+                                disabled={loginMutation.isPending}
+                            />
+                        </div>
+
+                        {/* Error Message Display */}
+                        {loginMutation.isError && (
+                            <div className="flex items-center gap-2 p-3 text-sm text-red-700 bg-red-50 rounded-lg">
+                                {/* Error Icon */}
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                <p>{loginMutation.error.message}</p>
+                            </div>
+                        )}
+
+                        {/* Submit Button */}
+                        <button type="submit" disabled={loginMutation.isPending} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-full transition-colors disabled:opacity-70 mt-4 hover:cursor-pointer">
+                            {loginMutation.isPending ? "Signing In..." : "Sign In"}
+                        </button>
+
+                        {/* Footer Link */}
+                        <p className="mt-4 text-center text-sm text-gray-600">
+                            Don't have an account?{' '}
+                            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                Sign Up
+                            </Link>
                         </p>
-                    )}
-
-                    <Button type="submit" disabled={loginMutation.isPending} className="w-full">
-                        {loginMutation.isPending ? "Logging in..." : "Login"}
-                    </Button>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

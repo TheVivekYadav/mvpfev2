@@ -1,15 +1,33 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import Header from '../../components/layout/Header';
 import Sidebar from '../../components/layout/Sidebar';
+import { useAppStore } from '../../store/AppStore';
 
 export const Route = createFileRoute('/_dashboard/dashboard')({
+  beforeLoad: async () => {
+    document.title = "Dashboard - VeriHire";
+
+    const { user, verifyAuth } = useAppStore.getState();
+
+    if (!user) {
+      await verifyAuth();
+      const updatedUser = useAppStore.getState().user;
+      if (!updatedUser) {
+        throw redirect({
+          to: "/login",
+          search: {
+            redirect: location.href,
+          },
+        })
+      }
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

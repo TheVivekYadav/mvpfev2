@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 
 
 interface ModalProps {
@@ -9,35 +9,41 @@ interface ModalProps {
 }
 
 export default function CuteModal({ isOpen, onClose, title, children }: ModalProps) {
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        function onKeyDown(e: KeyboardEvent) {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        }
+        document.addEventListener('keydown', onKeyDown);
+        return () => document.removeEventListener('keydown', onKeyDown);
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
-    if (!onClose) {
-        console.log('closed')
+
+    function handleClose(e: React.MouseEvent) {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
     }
 
     return (
-        // Backdrop with a blur effect
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-{50} backdrop-blur-lg">
+        <div onClick={handleClose} className="fixed inset-0 z-50 flex items-center justify-center p-4  bg-opacity-{50} backdrop-blur-lg">
 
-            {/* Modal Panel with custom animation, shadows, and rounded corners */}
-            <div className="w-full max-w-md p-2 mx-auto bg-white rounded-3xl shadow-2xl transform transition-all animate-pop-in">
+            <div className="w-full max-w-md p-4 mx-auto bg-white border border-slate-200/80 rounded-xl shadow-lg sm:p-6">
 
-                {/* Decorative top border */}
-                <div className="bg-white rounded-2xl border-t-8 border-purple-300 p-6">
+                <div className="flex items-center gap-4">
 
-                    {/* Header with Icon and Title */}
-                    <div className="flex items-center gap-3">
-                        <span className="text-3xl">✨</span>
-                        <h3 className="text-2xl font-bold text-slate-800" id="modal-title">
-                            {title}
-                        </h3>
-                    </div>
+                    <h3 className="text-xl font-semibold text-slate-800" id="modal-title">
+                        {title}
+                    </h3>
+                </div>
 
-                    {/* Content Area */}
-                    <div className="mt-4 text-slate-600">
-                        {children}
-                    </div>
-
-
+                <div className="mt-5 text-sm text-slate-600 sm:text-base">
+                    {children}
                 </div>
             </div>
         </div>

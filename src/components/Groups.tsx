@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { groupService } from "../api/groupService";
+import { useAppStore } from "../store/AppStore";
 import { showErrorToast, showSuccessToast } from "../utils/toast";
 import Modal from "./Modal";
 import GroupCard from "./ui/GroupCard";
@@ -10,6 +11,31 @@ function Groups() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const groupNameInput = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { getAllGroups, groups } = useAppStore();
+    const groupData = useRef(groups);
+
+    const fetchGroups = useCallback(() => {
+        getAllGroups();
+
+    }, [getAllGroups]);
+
+    useEffect(() => {
+        fetchGroups();
+    }, [fetchGroups]);
+
+    useEffect(() => {
+        groupData.current = groups;
+    }, [groups]);
+
+    // API DATA
+    /**
+     * 0
+    : 
+    isAdmin : true
+    name : "bff"
+    _id : "68ce2f0b107698c78a279af6"
+     */
+
 
     // Dummy data for demonstration
     const groupsData = [
@@ -44,24 +70,34 @@ function Groups() {
         },
     ];
 
-    function createGroup() {
+    const createGroup = useCallback(async () => {
         if (!groupNameInput.current?.value.trim()) {
             showErrorToast('Group name cannot be empty.');
             return;
         }
+
         setIsLoading(true);
-        groupService.createGroup(groupNameInput.current.value).then(() => {
+
+        try {
+            await groupService.createGroup(groupNameInput.current.value);
             showSuccessToast('Group created successfully!');
-            setIsModalOpen(false);
+
             if (groupNameInput.current) {
                 groupNameInput.current.value = '';
             }
-        }).catch((err) => {
+
+            setIsModalOpen(false);
+
+            setTimeout(() => {
+                getAllGroups();
+            }, 100);
+
+        } catch (err: any) {
             showErrorToast(err.message || 'Failed to create group.');
-        }).finally(() => {
+        } finally {
             setIsLoading(false);
-        });
-    }
+        }
+    }, [getAllGroups]);
 
     return (
         <div className="max-w-7xl mx-auto p-4 md:p-8">
@@ -77,9 +113,8 @@ function Groups() {
                 </button>
             </div>
 
-            {/* Grid for the group cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {groupsData.map((group, index) => (
+                {groups.map((group, index) => (
                     <GroupCard key={index} {...group} />
                 ))}
             </div>

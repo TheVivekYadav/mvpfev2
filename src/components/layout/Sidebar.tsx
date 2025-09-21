@@ -1,14 +1,30 @@
 
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import React from 'react';
+import { useAppStore } from '../../store/AppStore';
+import { showErrorToast } from '../../utils/toast';
 
 const Sidebar: React.FC = () => {
+
+    const { user, logout } = useAppStore();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate({ to: '/login' })
+        } catch (error) {
+            showErrorToast("Logout failed");
+        }
+    }
+
     const linkClasses = "flex items-center p-3 my-2 text-gray-200 no-underline rounded-lg transition-colors duration-200 hover:bg-slate-700 hover:text-white";
 
     const activeLinkClasses = "font-bold text-teal-400 bg-slate-700";
 
     console.log("Sidebar render");
     return (
+
         <nav className="flex flex-col h-full bg-slate-800 p-4">
 
             <div>
@@ -48,13 +64,12 @@ const Sidebar: React.FC = () => {
                             <span className="text-lg font-semibold text-white">JD</span>
                         </div>
                         <div className="text-left">
-                            <div className="text-sm font-bold text-white">John Doe</div>
-                            <div className="text-xs text-gray-400">Administrator</div>
+                            <div className="text-sm font-bold text-white">{user ? user.name.toUpperCase() : "Loading..."}</div>
                         </div>
                     </div>
 
                     <button
-                        onClick={() => alert('Logout logic goes here!')}
+                        onClick={handleLogout}
                         className="p-2 rounded-md text-gray-400 transition-colors duration-200 hover:bg-slate-700 hover:text-white"
                         aria-label="Logout"
                     >
