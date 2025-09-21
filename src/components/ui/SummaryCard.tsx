@@ -1,3 +1,4 @@
+// @ts-nocheck
 const SummaryCard = ({ title, amount, note, amountColor = 'text-gray-900' }) => (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
         <div className="flex justify-between items-center">

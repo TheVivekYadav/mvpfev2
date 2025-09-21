@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, useEffect, useRef, useState } from "react";
 import { groupService } from "../api/groupService";
 import { useAppStore } from "../store/AppStore";

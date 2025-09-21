@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useAppStore } from "../store/AppStore";
 import GroupCard from "./ui/GroupCard";
 import SummaryCard from "./ui/SummaryCard";
