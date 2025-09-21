@@ -34,10 +34,16 @@ export function Register() {
                 setSuccess(true);
                 setTimeout(() => navigate({ to: "/login" }), 1500);
             } else {
-                setError("Registration failed. Please try again.");
+                console.log(`Response status code:`)
+                setError(`${res.data.status} - ${res.data.message || "An error occurred. Please try again."}`);
             }
         } catch (e: any) {
-            setError(e?.response?.data?.error || "Registration failed. Please try again.");
+            console.log(e.response.status)
+            if (e.response?.status === 409) {
+                setError("Email already exists. Please use a different email.");
+            }
+            else
+                setError(e?.response?.data?.error || "Registration failed. Please try again.");
         } finally {
             setLoading(false);
         }
